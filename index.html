@@ -188,24 +188,35 @@ image-rendering: crisp-edges;
             const key = e.key.toLowerCase();
             if (['w', 'a', 's', 'd'].includes(key)) currentDir = key;
         });
-        window.addEventListener('touchstart', (e) => {
-    const touchX = e.touches[0].clientX;
-    const touchY = e.touches[0].clientY;
-    
-    // Berechne die Mitte des Spielers
-    const centerX = posX + 30;
-    const centerY = posY + 22;
-    
-    const diffX = touchX - centerX;
-    const diffY = touchY - centerY;
-    
-    // Entscheide, in welche Richtung am stärksten getippt wurde
-    if (Math.abs(diffX) > Math.abs(diffY)) {
-        currentDir = diffX > 0 ? 'd' : 'a';
-    } else {
-        currentDir = diffY > 0 ? 's' : 'w';
+// NEUE WISCH-STEUERUNG
+let touchStartX = 0;
+let touchStartY = 0;
+
+window.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+}, {passive: false});
+
+window.addEventListener('touchend', (e) => {
+    if (touchStartX === 0 || touchStartY === 0) return;
+
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - touchStartY;
+
+    if (Math.abs(diffX) > 30 || Math.abs(diffY) > 30) {
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            currentDir = diffX > 0 ? 'd' : 'a';
+        } else {
+            currentDir = diffY > 0 ? 's' : 'w';
+        }
     }
-});
+
+    touchStartX = 0;
+    touchStartY = 0;
+}, {passive: false});
 
         function update() {
             if (gameOver) return;
