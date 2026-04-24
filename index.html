@@ -2,70 +2,110 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=^, initial-scale=1.0">
-    <title>max-studios | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>max-studios | Alien Hazard</title>
     <style>
-        /* Grundlegendes Styling */
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #0b0e14;
-        color: #e0e0e0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-    }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b0e14;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
 
-    header h1 {
-        font-size: 3rem;
-        letter-spacing: 2px;
-        color: #00ffcc;
-        text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-        margin-bottom: 2rem;
-    }
+        header h1 {
+            font-size: 3rem;
+            letter-spacing: 2px;
+            color: #00ffcc;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            margin-bottom: 2rem;
+        }
 
-    /* Button-Container */
-    .buttonBox {
-        padding: 20px;
-    }
+        .buttonBox {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
 
-    /* Der Button */
-    button {
-        background: transparent;
-        color: #00ffcc;
-        border: 2px solid #00ffcc;
-        padding: 15px 40px;
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        font-weight: bold;
-        border-radius: 5px;
-    }
+        /* Der Button mit fester Breite/Höhe */
+        button {
+            background: transparent;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 5px;
+            width: 300px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    /* Hover-Effekt */
-    button:hover {
-        background-color: #00ffcc;
-        color: #0b0e14;
-        box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
-    }
+        button:hover {
+            background-color: #00ffcc;
+            color: #0b0e14;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+        }
+
+        /* Text-Wechsel beim Hover */
+        button .btn-text { display: block; }
+        button:hover .btn-text { display: none; }
+        button::after { content: ""; display: none; }
+        button:hover::after { content: "PLAY"; display: block; }
+
+        /* Sub-Label mit fixer Höhe, damit nichts nach unten rutscht */
+        .sub-label {
+            margin-top: 25px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.8rem;
+            color: #00ffcc;
+            text-transform: uppercase;
+            text-align: center;
+            max-width: 400px;
+            height: 50px; 
+            opacity: 0.8;
+            letter-spacing: 1px;
+            line-height: 1.4;
+            transition: 0.3s;
+        }
+
+        button:hover + .sub-label {
+            text-shadow: 0 0 5px #00ffcc;
+            letter-spacing: 3px;
+        }
     </style>
 </head>
 <body>
+
     <header>
         <h1>max-studios.github.io</h1>
     </header>
+
     <div class="buttonBox">
-        <button id="btnClick">Play Alien Hazard</button>
+        <button id="btnClick">
+            <span class="btn-text">Play Alien Hazard</span>
+        </button>
+        <div class="sub-label">
+            MISSION: Extract crystals in Sector 7.<br>
+            WARNING: Hazard zones expand. Avoid all craters.
+        </div>
     </div>
+
+    <script>
+        document.getElementById("btnClick").addEventListener("click", function() {
+            window.location.href = "game.html";
+        });
+    </script>
+
 </body>
-<script>
-// Wir suchen das Element über die ID
-    document.getElementById("btnClick").addEventListener("click", function() {
-        // Hier kommt der Befehl zur Weiterleitung
-        window.location.href = "game.html";
-    });
-</script>
 </html>
