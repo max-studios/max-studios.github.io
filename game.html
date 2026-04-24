@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>max-studios | Alien Hazard</title>
+    <link rel="icon" type="image/x-icon" href="/assets/ufo.png">
     <style>
  body {
 
@@ -46,18 +47,36 @@ image-rendering: crisp-edges;
             background-position: center;
         }
 
-        .ui {
-            position: absolute; top: 20px; left: 20px;
-            color: #00d4ff; font-family: 'Courier New', Courier, monospace;
-            background: rgba(0, 0, 0, 0.7); padding: 15px 25px;
-            border-radius: 0 15px 0 15px; border-left: 4px solid #00d4ff;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-            backdrop-filter: blur(5px); text-transform: uppercase;
-            letter-spacing: 1px; z-index: 10;
-        }
+    .ui {
+        position: absolute; 
+        top: 20px; 
+        left: 20px;
+        color: #00d4ff; 
+        /* Wähle eine klassische Monospace-Schrift */
+        font-family: 'Courier New', monospace; 
+        background: rgba(0, 0, 0, 0.9); /* Etwas dunkler ohne Transparenz-Blur */
+        padding: 15px 25px;
+        
+        /* Pixel-Style: Eckige Kanten */
+        border-radius: 0; 
+        border: 4px solid #00d4ff; /* Rahmen rundherum statt nur links */
+        
+        /* Pixel-Schatten statt weichem Glow */
+        box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+        
+        /* Kein Blur für scharfe Kanten */
+        backdrop-filter: none; 
+        
+        text-transform: uppercase;
+        letter-spacing: 2px; 
+        z-index: 10;
+        
+        /* Hilft, die Schrift bei Skalierung scharf zu halten */
+        image-rendering: pixelated;
+    }
 
         #timer, #score { font-weight: bold; color: #fff; text-shadow: 0 0 5px #00d4ff; }
-        #real-clock { font-size: 0.75em; margin-bottom: 8px; color: rgba(0, 212, 255, 0.8); }
+        #real-clock { display: none; }
 
         #game-container { width: 100vw; height: 100vh; position: relative; }
 
@@ -98,6 +117,37 @@ image-rendering: crisp-edges;
             background-size: 44px 44px;
             image-rendering: pixelated;
         }
+        #game-over-screen {
+    display: none; /* Erst versteckt */
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.95);
+    border: 4px solid #ff004c; /* Roter Rahmen für Alarm */
+    padding: 30px;
+    text-align: center;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    z-index: 100;
+    box-shadow: 10px 10px 0px rgba(255, 0, 76, 0.3);
+}
+
+
+    #game-over-screen h1 { color: #ff004c; margin-top: 0; }
+    #btnRerun {
+        background: #0051cb; color: #fff;
+        border: none; padding: 10px 20px;
+        font-family: inherit; font-weight: bold;
+        cursor: pointer; margin-top: 20px;
+        text-transform: uppercase;
+    }
+    #btnHome {
+        background: #ff004c; color: #fff;
+        border: none; padding: 10px 20px;
+        font-family: inherit; font-weight: bold;
+        cursor: pointer; margin-top: 20px;
+        text-transform: uppercase;
+    }
     </style>
 </head>
 <body>
@@ -114,157 +164,158 @@ image-rendering: crisp-edges;
         <div id="player"></div>
     </div>
 
-    <script>
-        const player = document.getElementById('player');
-        const timerDisplay = document.getElementById('timer');
-        const scoreDisplay = document.getElementById('score');
-        const highscoreDisplay = document.getElementById('highscore-list');
-        const gameContainer = document.getElementById('game-container');
-        const clockDisplay = document.getElementById('real-clock');
+    <div id="game-over-screen">
+    <h1>GAME OVER</h1>
+    <p>Deine Punkte: <span id="final-score">0</span></p>
+    <button id="btnRerun" onclick="location.reload()">NEU STARTEN</button>
+    <button id="btnHome" onclick="window.location.href ='index.html';">ZURÜCK INS HAUPTMENÜ</button>
+    </div>
 
-        const coinSound = new Audio("assets/coin.mp3");
-        const gameoverSound = new Audio("assets/gameover.mp3");
+<script>
+    const player = document.getElementById('player');
+    const timerDisplay = document.getElementById('timer');
+    const scoreDisplay = document.getElementById('score');
+    const highscoreDisplay = document.getElementById('highscore-list');
+    const gameContainer = document.getElementById('game-container');
+    const clockDisplay = document.getElementById('real-clock');
 
-        let score = 0;
-        let posX = 100, posY = 100;
-        const speed = 5; 
-        let currentDir = 'd'; 
-        const startTime = Date.now();
-        let gameOver = false;
+    const coinSound = new Audio("assets/coin.mp3");
+    const gameoverSound = new Audio("assets/gameover.mp3");
 
-        const obstacles = [];
-        let currentCoin = null;
+    let score = 0;
+    let posX = 100, posY = 100;
+    const baseSpeed = 5; 
+    let speedMultiplier = 1; 
+    let currentDir = 'd'; 
+    const startTime = Date.now();
+    let gameOver = false;
 
-        function updateClock() {
-            const now = new Date();
-            clockDisplay.innerText = now.toLocaleDateString('de-DE') + " | " + now.toLocaleTimeString('de-DE');
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+    const obstacles = [];
+    let currentCoin = null;
 
-        function updateHighscoreDisplay() {
-            const scores = JSON.parse(localStorage.getItem('game_scores_v2')) || [];
-            highscoreDisplay.innerHTML = scores.length > 0 
-                ? scores.map((s, i) => `${i+1}. <b>${s.points} Pkt</b> <small>${s.date}</small>`).join('<br>')
-                : "Keine Rekorde";
-        }
+    function updateClock() {
+        const now = new Date();
+        clockDisplay.innerText = now.toLocaleDateString('de-DE') + " | " + now.toLocaleTimeString('de-DE');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 
-        function saveScore(newPoints) {
-            let scores = JSON.parse(localStorage.getItem('game_scores_v2')) || [];
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('de-DE') + " " + now.toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'});
-            scores.push({ points: newPoints, date: dateStr });
-            scores.sort((a, b) => b.points - a.points);
-            localStorage.setItem('game_scores_v2', JSON.stringify(scores.slice(0, 3)));
-        }
-
-        function createObstacle(x, y) {
-            const obs = document.createElement('div');
-            obs.className = 'obstacle';
-            obs.style.left = x + 'px';
-            obs.style.top = y + 'px';
-            gameContainer.appendChild(obs);
-            obstacles.push(obs);
-        }
-
-        function spawnCoin() {
-            if (gameOver) return;
-            const coin = document.createElement('div');
-            coin.className = 'coin';
-            const x = Math.random() * (window.innerWidth - 40);
-            const y = Math.random() * (window.innerHeight - 34);
-            coin.style.left = x + 'px';
-            coin.style.top = y + 'px';
-            gameContainer.appendChild(coin);
-            currentCoin = coin;
-        }
-
-        function checkCollision(r1, r2) {
-            return !(r1.right < r2.left || r1.left > r2.right || 
-                     r1.bottom < r2.top || r1.top > r2.bottom);
-        }
-
-        window.addEventListener('keydown', (e) => {
-            const key = e.key.toLowerCase();
-            if (['w', 'a', 's', 'd'].includes(key)) currentDir = key;
-        });
-// NEUE WISCH-STEUERUNG
-let touchStartX = 0;
-let touchStartY = 0;
-
-window.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-}, {passive: false});
-
-window.addEventListener('touchend', (e) => {
-    if (touchStartX === 0 || touchStartY === 0) return;
-
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-
-    const diffX = touchEndX - touchStartX;
-    const diffY = touchEndY - touchStartY;
-
-    if (Math.abs(diffX) > 30 || Math.abs(diffY) > 30) {
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-            currentDir = diffX > 0 ? 'd' : 'a';
-        } else {
-            currentDir = diffY > 0 ? 's' : 'w';
-        }
+    function updateHighscoreDisplay() {
+        const scores = JSON.parse(localStorage.getItem('game_scores_v2')) || [];
+        highscoreDisplay.innerHTML = scores.length > 0 
+            ? scores.map((s, i) => `${i+1}. <b>${s.points} Pkt</b> <small>${s.date}</small>`).join('<br>')
+            : "Keine Rekorde";
     }
 
-    touchStartX = 0;
-    touchStartY = 0;
-}, {passive: false});
+    function saveScore(newPoints) {
+        let scores = JSON.parse(localStorage.getItem('game_scores_v2')) || [];
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('de-DE') + " " + now.toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'});
+        scores.push({ points: newPoints, date: dateStr });
+        scores.sort((a, b) => b.points - a.points);
+        localStorage.setItem('game_scores_v2', JSON.stringify(scores.slice(0, 3)));
+    }
 
-        function update() {
-            if (gameOver) return;
+    function createObstacle(x, y) {
+        const obs = document.createElement('div');
+        obs.className = 'obstacle';
+        obs.style.left = x + 'px';
+        obs.style.top = y + 'px';
+        gameContainer.appendChild(obs);
+        obstacles.push(obs);
+    }
 
-            timerDisplay.innerText = ((Date.now() - startTime) / 1000).toFixed(2);
+    function spawnCoin() {
+        if (gameOver) return;
+        const coin = document.createElement('div');
+        coin.className = 'coin';
+        const x = Math.random() * (window.innerWidth - 40);
+        const y = Math.random() * (window.innerHeight - 34);
+        coin.style.left = x + 'px';
+        coin.style.top = y + 'px';
+        gameContainer.appendChild(coin);
+        currentCoin = coin;
+    }
 
-            if (currentDir === 'w') posY -= speed;
-            if (currentDir === 's') posY += speed;
-            if (currentDir === 'a') { posX -= speed; }
-            if (currentDir === 'd') { posX += speed; }
+    function checkCollision(r1, r2) {
+        return !(r1.right < r2.left || r1.left > r2.right || 
+                 r1.bottom < r2.top || r1.top > r2.bottom);
+    }
 
-            // Spieler an Bildschirmrändern halten (basierend auf 60px Breite / 45px Höhe)
-            posX = Math.max(0, Math.min(posX, window.innerWidth - 60));
-            posY = Math.max(0, Math.min(posY, window.innerHeight - 45));
-            player.style.left = posX + 'px';
-            player.style.top = posY + 'px';
+    window.addEventListener('keydown', (e) => {
+        const key = e.key.toLowerCase();
+        if (['w', 'a', 's', 'd'].includes(key)) currentDir = key;
+    });
 
-            const playerRect = player.getBoundingClientRect();
+    // Wisch-Steuerung
+    let touchStartX = 0;
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, {passive: false});
 
-            if (currentCoin) {
-                if (checkCollision(playerRect, currentCoin.getBoundingClientRect())) {
-                    score++;
-                    scoreDisplay.innerText = score;
-                    const x = parseFloat(currentCoin.style.left);
-                    const y = parseFloat(currentCoin.style.top);
-                    currentCoin.remove();
-                    currentCoin = null;
-                    coinSound.play().catch(() => {});
-                    setTimeout(() => { createObstacle(x, y); }, 500);
-                    setTimeout(spawnCoin, 2000);
-                }
-            }
+    window.addEventListener('touchend', (e) => {
+        if (touchStartX === 0 || touchStartY === 0) return;
+        const diffX = e.changedTouches[0].clientX - touchStartX;
+        const diffY = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(diffX) > 30 || Math.abs(diffY) > 30) {
+            currentDir = Math.abs(diffX) > Math.abs(diffY) ? (diffX > 0 ? 'd' : 'a') : (diffY > 0 ? 's' : 'w');
+        }
+        touchStartX = 0; touchStartY = 0;
+    }, {passive: false});
 
-            obstacles.forEach(obs => {
-                if (checkCollision(playerRect, obs.getBoundingClientRect())) {
-                    gameOver = true;
-                    saveScore(score);
-                    gameoverSound.play().catch(() => {});
-                    alert("Game Over! Punkte: " + score);
-                    location.reload();
-                }
-            });
-            requestAnimationFrame(update);
+    function update() {
+        if (gameOver) return;
+
+        timerDisplay.innerText = ((Date.now() - startTime) / 1000).toFixed(2);
+
+        // Bewegungslogik mit Geschwindigkeits-Multiplikator
+        let currentSpeed = baseSpeed * speedMultiplier;
+        if (currentDir === 'w') posY -= currentSpeed;
+        if (currentDir === 's') posY += currentSpeed;
+        if (currentDir === 'a') posX -= currentSpeed;
+        if (currentDir === 'd') posX += currentSpeed;
+
+        posX = Math.max(0, Math.min(posX, window.innerWidth - 60));
+        posY = Math.max(0, Math.min(posY, window.innerHeight - 45));
+        player.style.left = posX + 'px';
+        player.style.top = posY + 'px';
+
+        const playerRect = player.getBoundingClientRect();
+
+        // 1. Kristall einsammeln
+        if (currentCoin && checkCollision(playerRect, currentCoin.getBoundingClientRect())) {
+            score++;
+            scoreDisplay.innerText = score;
+            if (speedMultiplier < 2.0) speedMultiplier += 0.02;
+
+            const x = parseFloat(currentCoin.style.left);
+            const y = parseFloat(currentCoin.style.top);
+            currentCoin.remove();
+            currentCoin = null;
+            coinSound.play().catch(() => {});
+            setTimeout(() => { createObstacle(x, y); }, 500);
+            setTimeout(spawnCoin, 2000);
         }
 
-        updateHighscoreDisplay();
-        spawnCoin();
-        update();
-    </script>
+        // 2. Hindernisse prüfen
+        obstacles.forEach(obs => {
+            if (checkCollision(playerRect, obs.getBoundingClientRect())) {
+                gameOver = true;
+                saveScore(score);
+                gameoverSound.play().catch(() => {});
+                document.getElementById('final-score').innerText = score;
+                document.getElementById('game-over-screen').style.display = 'block';
+            }
+        });
+
+        requestAnimationFrame(update);
+    }
+
+    updateHighscoreDisplay();
+    spawnCoin();
+    update();
+</script>
 </body>
 </html>
