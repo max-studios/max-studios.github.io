@@ -3,6 +3,9 @@ Release: 24.04.2026
 
 Changes: 
 - Added Coin-Speed-Feature
+- Added Home-Site
+- Added Web-Icon
+- Updated Title
 - Updated Scoreboard
 - Updated GameOver-Screen
 - Updated Charakter-Animation
