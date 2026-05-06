@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>max-studios | Plugins</title>
+    <style>
+      /* --- CSS STYLES (Apple & Modern Dark) --- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+      }
+
+      body {
+        background-color: #0f172a;
+        color: #f8fafc;
+        overflow-x: hidden;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Hintergrund */
+      .bg-glow {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      .blob {
+        position: absolute;
+        top: -10%;
+        right: -10%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(56, 189, 248, 0.1) 0%,
+          rgba(15, 23, 42, 0) 70%
+        );
+        filter: blur(80px);
+      }
+
+      /* Navigation */
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 10%;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .logo {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #f8fafc;
+        text-decoration: none;
+      }
+
+      /* Content Bereich */
+      .container {
+        max-width: 1000px;
+        margin: 80px auto;
+        padding: 0 20px;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 10px;
+      }
+
+      .subtitle {
+        color: #94a3b8;
+        font-size: 1.2rem;
+      }
+
+      /* Plugin Grid */
+      .plugin-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+      }
+
+      /* Plugin Card */
+      .plugin-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 30px;
+        transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .plugin-card:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(56, 189, 248, 0.3);
+      }
+
+      .version-tag {
+        font-size: 0.7rem;
+        background: rgba(56, 189, 248, 0.15);
+        color: #38bdf8;
+        padding: 4px 10px;
+        border-radius: 100px;
+        display: inline-block;
+        margin-bottom: 15px;
+      }
+
+      .plugin-card h3 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+      }
+
+      .plugin-card p {
+        color: #94a3b8;
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+        height: 50px; /* Hält die Boxen gleich groß */
+      }
+
+      /* Download Button & Animation */
+      .download-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 12px;
+        background: #f8fafc;
+        color: #0f172a;
+        text-decoration: none;
+        border-radius: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+        position: relative;
+        z-index: 1;
+      }
+
+      .download-btn:hover {
+        background: #38bdf8;
+        color: white;
+      }
+
+      /* Kleiner Ladebalken-Effekt beim Hover über die Karte */
+      .card-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        width: 0;
+        background: #38bdf8;
+        transition: width 0.6s ease;
+      }
+
+      .plugin-card:hover .card-progress {
+        width: 100%;
+      }
+
+      /* Zurück Button */
+      .back-link {
+        color: #94a3b8;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        transition: color 0.2s;
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px 20px;
+        color: #64748b;
+        font-size: 0.85rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        margin-top: 50px;
+      }
+
+      footer span {
+        color: #38bdf8; /* Ein kleiner Farbtupfer für das Wort 'privat' */
+      }
+
+      .back-link:hover {
+        color: #38bdf8;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate {
+        animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-glow"><div class="blob"></div></div>
+
+    <nav>
+      <a href="index.html" class="logo">max-studios</a>
+      <div class="nav-links"></div>
+    </nav>
+
+    <div class="container">
+      <a href="index.html" class="back-link">← Zurück zur Übersicht</a>
+
+      <header class="animate">
+        <h1>Downloads</h1>
+        <p class="subtitle">Einfache Tools für bessere Server.</p>
+      </header>
+
+      <div class="plugin-grid">
+        <div class="plugin-card animate" style="animation-delay: 0.1s">
+          <span class="version-tag">v1.0.3-beta</span>
+          <h3>KyaniteConsilium</h3>
+          <p>
+            Das Kernstück für individuelle Server-Anpassungen und eigene Menüs.
+          </p>
+          <a
+            href="https://github.com/max-studios/KyaniteConsilium/releases/download/v.1.0.3/KyaniteConsilium-1.0.3-beta.jar"
+            class="download-btn"
+          >
+            <span>Download</span>
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v4m4-10l5 5 5-5m-5 5V3"
+              ></path>
+            </svg>
+          </a>
+          <div class="card-progress"></div>
+        </div>
+
+        <div class="plugin-card animate" style="animation-delay: 0.2s">
+          <span class="version-tag">v1.0.0</span>
+          <h3>KyaniteGamemode</h3>
+          <p>
+            Nützliche Befehle, die den Admin-Alltag auf deinem Server
+            erleichtern.
+          </p>
+          <a
+            href="https://github.com/max-studios/KyaniteGamemode/releases/download/v1/KyaniteGamemode-1.0.jar"
+            class="download-btn"
+          >
+            <span>Download</span>
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v4m4-10l5 5 5-5m-5 5V3"
+              ></path>
+            </svg>
+          </a>
+          <div class="card-progress"></div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <p>
+        &copy; 2026 max-studios. Dies ist eine <span>private Webseite</span>.
+      </p>
+    </footer>
+  </body>
+</html>
