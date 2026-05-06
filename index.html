@@ -1,126 +1,299 @@
-<h1>This website is currently not avaiable. Please visit <a href="https://apple-cake-games.github.io">Alien Hazard (Game)</a> or <a href="https://github.com/max-studios">GitHub</a>.</h1>
-    <title>max-studios</title>
-        <link rel="icon" type="image/x-icon" href="/assets/christal1.png">
-<style>
-            header h1 {
-            font-size: 3rem;
-            letter-spacing: 2px;
-            color: #00ffcc;
-            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-            margin-bottom: 2rem;
-        }
-</style>
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>max-studios | Alien Hazard</title>
-        <link rel="icon" type="image/x-icon" href="/assets/christal1.png">
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>max-studios | Development</title>
     <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0e14;
-            color: #e0e0e0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
+      /* --- CSS STYLES --- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+      }
 
-        header h1 {
-            font-size: 3rem;
-            letter-spacing: 2px;
-            color: #00ffcc;
-            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-            margin-bottom: 2rem;
-        }
+      body {
+        background-color: #0f172a;
+        color: #f8fafc;
+        overflow-x: hidden;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
 
-        .buttonBox {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
+      /* Hintergrund-Animation */
+      .bg-glow {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
 
-        /* Der Button mit fester Breite/Höhe */
-        button {
-            background: transparent;
-            color: #00ffcc;
-            border: 2px solid #00ffcc;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            font-weight: bold;
-            border-radius: 5px;
-            width: 300px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      .blob {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(56, 189, 248, 0.15) 0%,
+          rgba(15, 23, 42, 0) 70%
+        );
+        border-radius: 50%;
+        filter: blur(80px);
+        animation: move 20s infinite alternate;
+      }
 
-        button:hover {
-            background-color: #00ffcc;
-            color: #0b0e14;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+      @keyframes move {
+        from {
+          transform: translate(-10%, -10%);
         }
-
-        /* Text-Wechsel beim Hover */
-        button .btn-text { display: block; }
-        button:hover .btn-text { display: none; }
-        button::after { content: ""; display: none; }
-        button:hover::after { content: "PLAY"; display: block; }
-
-        /* Sub-Label mit fixer Höhe, damit nichts nach unten rutscht */
-        .sub-label {
-            margin-top: 25px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.8rem;
-            color: #00ffcc;
-            text-transform: uppercase;
-            text-align: center;
-            max-width: 400px;
-            height: 50px; 
-            opacity: 0.8;
-            letter-spacing: 1px;
-            line-height: 1.4;
-            transition: 0.3s;
+        to {
+          transform: translate(60%, 40%);
         }
+      }
 
-        button:hover + .sub-label {
-            text-shadow: 0 0 5px #00ffcc;
-            letter-spacing: 3px;
+      /* Navigation */
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 10%;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .logo {
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        color: #f8fafc;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+      }
+
+      .nav-links a {
+        color: #94a3b8;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #38bdf8;
+      }
+
+      /* Hero Bereich */
+      .hero {
+        height: calc(100vh - 80px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 20px;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 7vw, 4.5rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        color: #f8fafc;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      }
+
+      p {
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        color: #94a3b8;
+        max-width: 550px;
+        margin-bottom: 2.5rem;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
+      }
+
+      .cta-button {
+        padding: 14px 32px;
+        background-color: #f8fafc;
+        color: #0f172a;
+        text-decoration: none;
+        border-radius: 980px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards;
+      }
+
+      .cta-button:hover {
+        transform: scale(1.03);
+        background-color: #38bdf8;
+        color: white;
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px 20px;
+        color: #64748b;
+        font-size: 0.85rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        margin-top: 50px;
+      }
+
+      footer span {
+        color: #38bdf8; /* Ein kleiner Farbtupfer für das Wort 'privat' */
+      }
+
+      /* Die neue Terminal Card */
+      .floating-card {
+        margin-top: 5rem;
+        width: 320px;
+        padding: 1.5rem;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 18px;
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        animation: float 5s ease-in-out infinite;
+        text-align: left;
+      }
+
+      .dot-container {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 1.2rem;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .terminal-text {
+        font-family: "SF Mono", "Fira Code", monospace;
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
+
+      .line {
+        margin-bottom: 4px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .code-blue {
+        color: #38bdf8;
+      }
+      .code-green {
+        color: #27c93f;
+      }
+      .code-gray {
+        color: #64748b;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-15px) rotate(1deg);
+        }
+      }
     </style>
-</head>
-<body>
-
-    <header>
-        <h1>max-studios.github.io</h1>
-    </header>
-
-    <div class="buttonBox">
-        <button id="btnClick">
-            <span class="btn-text">Play Alien Hazard</span>
-        </button>
-        <div class="sub-label">
-            MISSION: Extract crystals in Sector 7.<br>
-            WARNING: Hazard zones expand. Avoid all craters.
-        </div>
+  </head>
+  <body>
+    <div class="bg-glow">
+      <div class="blob"></div>
     </div>
 
-    <script>
-        document.getElementById("btnClick").addEventListener("click", function() {
-            window.location.href = "game.html";
-        });
-    </script>
+    <nav>
+      <div class="logo">max-studios</div>
+      <ul class="nav-links">
+        <li><a href="https://github.com/max-studios">GitHub</a></li>
+        <li><a href="https://apple-cake-games.github.io">Browsergame</a></li>
+        <li><a href="/downloads.html">Plugins</a></li>
+      </ul>
+    </nav>
 
-</body>
+    <header class="hero">
+      <h1>Einfach. Individuell.</h1>
+      <p>
+        Werkzeuge, die dort ansetzen, wo Standardlösungen aufhören. Sauberer
+        Code für Server, die sich einfach richtig anfühlen.
+      </p>
+
+      <a href="/downloads.html" class="cta-button">Plugins entdecken</a>
+
+      <div class="floating-card">
+        <div class="dot-container">
+          <div class="dot" style="background: #ff5f56"></div>
+          <div class="dot" style="background: #ffbd2e"></div>
+          <div class="dot" style="background: #27c93f"></div>
+        </div>
+
+        <div class="terminal-text">
+          <div class="line">
+            <span class="code-gray">System:</span>
+            <span class="code-green">Bereit</span>
+          </div>
+          <div class="line" style="margin-top: 10px">
+            <span class="code-blue">Plugin:</span>
+            <span style="color: #f8fafc">Customizer.jar</span>
+          </div>
+          <div
+            style="
+              height: 1px;
+              background: rgba(255, 255, 255, 0.1);
+              margin: 10px 0;
+            "
+          ></div>
+          <div class="line">
+            <span class="code-gray">› Performance</span>
+            <span class="code-green">Optimal</span>
+          </div>
+          <div class="line">
+            <span class="code-gray">› Menüs</span>
+            <span class="code-green">Aktiv</span>
+          </div>
+          <div class="line">
+            <span class="code-gray">› Anpassung</span>
+            <span style="color: #f8fafc">100%</span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <footer>
+      <p>
+        &copy; 2026 max-studios. Dies ist eine <span>private Webseite</span>.
+      </p>
+    </footer>
+  </body>
 </html>
--->
