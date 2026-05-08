@@ -81,7 +81,7 @@
       }
       .plugin-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 25px;
       }
       .plugin-card {
@@ -121,7 +121,7 @@
         flex-grow: 1;
       }
 
-      /* --- NEUE DOWNLOAD ANIMATION STYLES --- */
+      /* --- DOWNLOAD ANIMATION STYLES --- */
       .download-btn {
         display: flex;
         align-items: center;
@@ -154,13 +154,12 @@
         transition:
           transform 0.3s,
           opacity 0.3s;
+        z-index: 2;
       }
 
-      /* Lade-Zustand */
       .download-btn.loading {
         background: rgba(255, 255, 255, 0.1);
         pointer-events: none;
-        color: transparent;
       }
 
       .download-btn.loading .btn-text {
@@ -176,25 +175,31 @@
         width: 0%;
         background: #38bdf8;
         transition: width 2s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+        z-index: 1;
       }
 
-      /* Checkmark-Zustand */
       .download-btn .success-icon {
         position: absolute;
         opacity: 0;
         transform: scale(0.5);
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         color: white;
+        z-index: 2;
       }
 
       .download-btn.completed {
-        background: #22c55e; /* Grün */
+        background: #22c55e;
         pointer-events: none;
+        color: white;
       }
 
       .download-btn.completed .success-icon {
         opacity: 1;
         transform: scale(1.2);
+      }
+
+      .download-btn.completed .btn-text {
+        opacity: 0;
       }
 
       /* --- RESTLICHE STYLES --- */
@@ -315,16 +320,103 @@
         <div class="plugin-card animate" style="animation-delay: 0.2s">
           <span class="version-tag">v1.0.0</span>
           <h3>KyaniteGamemode</h3>
-          <p>
-            Nützliche Befehle, die den Admin-Alltag auf deinem Server
-            erleichtern.
-          </p>
+          <p>Bringt das alte Spielerlebnis etwas zurück.</p>
           <button
             class="download-btn"
             onclick="
               startDownload(
                 this,
                 'https://github.com/max-studios/KyaniteGamemode/releases/download/v1/KyaniteGamemode-1.0.jar',
+              )
+            "
+          >
+            <div class="loader-bar"></div>
+            <div class="btn-text">
+              <span>Download</span>
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4m4-10l5 5 5-5m-5 5V3"
+                ></path>
+              </svg>
+            </div>
+            <div class="success-icon">
+              <svg
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                viewBox="0 0 24 24"
+              >
+                <path d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+          </button>
+          <div class="card-progress"></div>
+        </div>
+
+        <div class="plugin-card animate" style="animation-delay: 0.3s">
+          <span class="version-tag">v1.0</span>
+          <h3>KyaniteChatGuard</h3>
+          <p>Fügt eine Blacklist mit Autoban-Funktion hinzu.</p>
+          <button
+            class="download-btn"
+            onclick="
+              startDownload(
+                this,
+                'https://github.com/max-studios/KyaniteChatGuard/releases/download/v1/KyaniteChatGuard-1.0.jar',
+              )
+            "
+          >
+            <div class="loader-bar"></div>
+            <div class="btn-text">
+              <span>Download</span>
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4m4-10l5 5 5-5m-5 5V3"
+                ></path>
+              </svg>
+            </div>
+            <div class="success-icon">
+              <svg
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                viewBox="0 0 24 24"
+              >
+                <path d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+          </button>
+          <div class="card-progress"></div>
+        </div>
+
+        <div class="plugin-card animate" style="animation-delay: 0.4s">
+          <span class="version-tag">v1.0-alpha</span>
+          <h3>KyaniteBan</h3>
+          <p>Fügt simple Ban-Befehle hinzu.</p>
+          <button
+            class="download-btn"
+            onclick="
+              startDownload(
+                this,
+                'https://github.com/max-studios/KyaniteBan/releases/download/v.1/KyaniteBan-1.0.jar',
               )
             "
           >
@@ -376,24 +468,23 @@
         )
           return;
 
-        // Start animation
         btn.classList.add("loading");
         const loader = btn.querySelector(".loader-bar");
 
-        // Simuliere den Ladefortschritt
+        // Start animation
         setTimeout(() => {
           loader.style.width = "100%";
         }, 50);
 
-        // Nach Abschluss der Animation (2s)
+        // Nach Abschluss der Animation
         setTimeout(() => {
           btn.classList.remove("loading");
           btn.classList.add("completed");
 
-          // Starte den eigentlichen Download
+          // Download starten
           window.location.href = url;
 
-          // Optional: Nach 3 Sekunden den Button zurücksetzen
+          // Reset nach 3 Sekunden
           setTimeout(() => {
             btn.classList.remove("completed");
             loader.style.width = "0%";
