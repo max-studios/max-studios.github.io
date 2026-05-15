@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenDiashow</title>
+    <link rel="stylesheet" href="diashow.css" />
+  </head>
+  <body>
+    <h1 id="h">OpenDiashow</h1>
+    <!---->
+    <div class="upload">
+      <p>USE F11 TO ENTER FULLSCREEN</p>
+      <div class="input">
+        <input
+          id="inpfile"
+          type="file"
+          name="inputfiles"
+          accept=".jpg, .jpeg, .png"
+          multiple
+        />
+      </div>
+      <div class="settings">
+        <input type="number" name="SPImg" id="SPImg" />
+        <label for="SPImg">Seconds per Image</label>
+        <button id="btnStart">Start</button>
+      </div>
+    </div>
+    <!---->
+    <div class="display">
+      <button id="btnStop">Stop</button>
+      <img src="" alt="" id="diashowImg" />
+    </div>
+    <!---->
+  </body>
+  <script src="diashow.js"></script>
+</html>

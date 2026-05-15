@@ -1,0 +1,117 @@
+/* Css wurde generiert. Bei Fehler -> style.css */
+
+* {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: black;
+}
+
+#h,
+.upload,
+#btnStop {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#h {
+  top: 18px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+.upload {
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  color: white;
+  z-index: 1000;
+}
+
+.upload p {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.input,
+.settings {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+input[type="number"] {
+  width: 70px;
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+button {
+  border: none;
+  padding: 10px 16px;
+  background: rgba(0, 166, 255, 0.8);
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: rgba(0, 140, 220, 0.9);
+}
+
+.display {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#diashowImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#btnStop {
+  bottom: 25px;
+  z-index: 999;
+  padding: 12px 22px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 999px;
+  color: white;
+  transition: 0.2s;
+}
+
+#btnStop:hover {
+  transform: translateX(-50%) scale(1.05);
+}
