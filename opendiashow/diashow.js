@@ -6,6 +6,7 @@ let intervall;
 let imglist = [];
 let index = 0;
 let curTimer;
+let audio;
 document.getElementById("btnStop").style.display = "none";
 
 images.addEventListener("change", function (event) {
@@ -21,20 +22,45 @@ btnStart.addEventListener("click", function () {
   document.body.style.backgroundColor = "black";
   document.querySelector(".upload").style.display = "none";
   document.getElementById("h").style.display = "none";
+  isShuffle = document.getElementById("shuffle").checked;
   let secondsperimage = Number(document.getElementById("SPImg").value);
   let millisecondsperimage = secondsperimage * 1000;
-  intervall = setInterval(function () {
-    index = index + 1;
-    if (index == imglist.length) {
-      index = 0;
-    }
-    let nextImg = imglist[index];
-    let imgURL = URL.createObjectURL(nextImg);
-    diashowImg.src = imgURL;
-  }, millisecondsperimage);
+  const audiosrc = document.getElementById("inpsound");
+  if (audiosrc.files && audiosrc.files[0]) {
+    const audiofile = audiosrc.files[0];
+    const audioURL = URL.createObjectURL(audiofile);
+    audio = new Audio(audioURL);
+    audio.loop = true;
+    audio.play();
+  }
+  if (isShuffle) {
+    intervall = setInterval(function () {
+      max = imglist.length - 1;
+      index = Math.floor(Math.random() * (max - 0 + 1)) + 0;
+      if (index == imglist.length) {
+        index = 0;
+      }
+      let nextImg = imglist[index];
+      let imgURL = URL.createObjectURL(nextImg);
+      diashowImg.src = imgURL;
+    }, millisecondsperimage);
+  } else {
+    intervall = setInterval(function () {
+      index = index + 1;
+      if (index == imglist.length) {
+        index = 0;
+      }
+      let nextImg = imglist[index];
+      let imgURL = URL.createObjectURL(nextImg);
+      diashowImg.src = imgURL;
+    }, millisecondsperimage);
+  }
 });
 
 btnStop.addEventListener("click", function () {
+  if (audio) {
+    audio.pause();
+  }
   clearInterval(intervall);
   document.removeEventListener("mousemove", removeListener);
   clearTimeout(curTimer);
