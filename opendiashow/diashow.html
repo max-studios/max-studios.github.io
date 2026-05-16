@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OpenDiashow</title>
-    <link rel="stylesheet" href="diashow.css" />
+    <link rel="stylesheet" href="stylenew.css" />
   </head>
   <body>
     <h1 id="h">OpenDiashow</h1>
@@ -21,8 +21,18 @@
         />
       </div>
       <div class="settings">
+        <input
+          id="inpsound"
+          type="file"
+          name="inputsound"
+          accept=".mp3, .wav, .wave"
+          multiple
+        />
+        <label for="inpsound">Background Music</label>
         <input type="number" name="SPImg" id="SPImg" />
         <label for="SPImg">Seconds per Image</label>
+        <input type="checkbox" name="Shuffle" id="shuffle" />
+        <label for="shuffle">Shuffle</label>
         <button id="btnStart">Start</button>
       </div>
     </div>
@@ -33,5 +43,5 @@
     </div>
     <!---->
   </body>
-  <script src="diashow.js"></script>
+  <script src="script.js"></script>
 </html>
