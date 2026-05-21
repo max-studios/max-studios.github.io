@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog | max-studios</title>
+    <style>
+      /* --- CSS STYLES --- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+      }
+
+      body {
+        background-color: #0f172a;
+        color: #f8fafc;
+        overflow-x: hidden;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .bg-glow {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      .blob {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(56, 189, 248, 0.15) 0%,
+          rgba(15, 23, 42, 0) 70%
+        );
+        border-radius: 50%;
+        filter: blur(80px);
+        animation: move 20s infinite alternate;
+      }
+
+      @keyframes move {
+        from {
+          transform: translate(-10%, -10%);
+        }
+        to {
+          transform: translate(60%, 40%);
+        }
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 10%;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .logo {
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        color: #f8fafc;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+      }
+
+      .nav-links a {
+        color: #94a3b8;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #38bdf8;
+      }
+
+      main {
+        flex: 1;
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 4rem 10%;
+      }
+
+      .back-link {
+        color: #94a3b8;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        transition: color 0.2s;
+      }
+
+      .back-link:hover {
+        color: #38bdf8;
+      }
+
+      .blog-header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 1rem;
+        color: #f8fafc;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      }
+
+      .subtitle {
+        font-size: clamp(1rem, 3vw, 1.1rem);
+        color: #94a3b8;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
+      }
+
+      .blog-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards;
+      }
+
+      .blog-card {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 18px;
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s;
+      }
+
+      .blog-card:hover {
+        border-color: rgba(56, 189, 248, 0.4);
+        box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+      }
+
+      .post-meta {
+        font-size: 0.85rem;
+        color: #64748b;
+        margin-bottom: 0.75rem;
+        display: flex;
+        gap: 1rem;
+      }
+
+      .post-category {
+        color: #38bdf8;
+        font-weight: 600;
+      }
+
+      .blog-card h2 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #f8fafc;
+        margin-bottom: 1rem;
+        line-height: 1.3;
+      }
+
+      .blog-card p {
+        color: #94a3b8;
+        font-size: 0.95rem;
+      }
+
+      .full-content {
+        display: none;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .full-content p {
+        margin-bottom: 1rem;
+      }
+
+      .toggle-btn {
+        background: none;
+        border: none;
+        color: #38bdf8;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        padding: 0;
+        margin-top: 1.5rem;
+        align-self: flex-start;
+        transition: color 0.2s;
+      }
+
+      .toggle-btn:hover {
+        color: #f8fafc;
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px 20px;
+        color: #64748b;
+        font-size: 0.85rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        margin-top: 50px;
+      }
+
+      footer span {
+        color: #38bdf8;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-glow">
+      <div class="blob"></div>
+    </div>
+
+    <nav>
+      <div class="logo">max-studios</div>
+      <ul class="nav-links">
+        <li><a href="https://github.com/max-studios">GitHub</a></li>
+        <li><a href="https://apple-cake-games.github.io">Browsergame</a></li>
+        <li><a href="/downloads.html">Plugins</a></li>
+        <li><a href="/opendiashow/diashow.html">OpenDiashow</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <a href="index.html" class="back-link">← Zurück zur Übersicht</a>
+
+      <header class="blog-header">
+        <h1>DevBlog</h1>
+        <p class="subtitle">
+          Einblicke in die Entwicklung, Updates und neue Features.
+        </p>
+      </header>
+
+      <div class="blog-grid">
+        <article class="blog-card">
+          <div class="post-meta">
+            <span class="post-category">Alien-Hazard</span>
+            <span>21. Mai 2026</span>
+          </div>
+          <h2>Alien Hazard</h2>
+          <p>
+            Das Spiel Alien Hazard ist ein Html, Css und Js basiertes
+            Browsergame. Es ist kostenlos spielbar.
+          </p>
+
+          <div class="full-content">
+            <p>
+              Das Spiel steht noch in Entwicklungsphasen, weshalb es viele
+              Updates gibt.
+            </p>
+            <p>Spiele Alien Hazard im Tab "Browsergame".</p>
+          </div>
+
+          <button class="toggle-btn">Weiterlesen &darr;</button>
+        </article>
+      </div>
+    </main>
+
+    <footer>
+      <p>
+        &copy; 2026 max-studios. Dies ist eine <span>private Webseite</span>.
+      </p>
+    </footer>
+
+    <script>
+      document.querySelectorAll(".toggle-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+          const card = button.closest(".blog-card");
+          const content = card.querySelector(".full-content");
+
+          if (content.style.display === "block") {
+            content.style.display = "none";
+            button.innerHTML = "Weiterlesen &darr;";
+          } else {
+            content.style.display = "block";
+            button.innerHTML = "Schließen &uarr;";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
