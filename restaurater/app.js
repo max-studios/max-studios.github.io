@@ -25,6 +25,10 @@ function renderTypeSelect() {
     <p class="eyebrow">Schritt 1</p>
     <h1 class="title">Um welchen Betrieb geht's?</h1>
     <p class="subtitle">Wähle den passenden Typ, damit wir dir die richtigen Fragen stellen.</p>
+    <button class="tutorial-link" id="tutorialBtn">
+      <span class="icon-circle">i</span>
+      Wie funktioniert die Bewertung?
+    </button>
     <div class="type-grid">
       ${types
         .map(
@@ -49,6 +53,10 @@ function renderTypeSelect() {
     </div>
   `;
 
+  document
+    .getElementById("tutorialBtn")
+    .addEventListener("click", renderTutorial);
+
   main.querySelectorAll(".type-card[data-type]").forEach((btn) => {
     btn.addEventListener("click", () => {
       state.businessType = btn.dataset.type;
@@ -58,6 +66,56 @@ function renderTypeSelect() {
       renderCategory(0);
     });
   });
+}
+
+function meaningForValue(v) {
+  if (v <= 2) return "Ich habe mich in diesem Punkt sehr unwohl gefühlt.";
+  if (v <= 4) return "Ich wurde in diesem Punkt enttäuscht.";
+  if (v <= 6)
+    return "Ich habe mich in diesem Punkt wohl gefühlt, wurde aber nicht positiv überrascht.";
+  if (v <= 8) return "Ich war in diesem Punkt zufrieden.";
+  return "Dieser Punkt hat mich besonders überzeugt.";
+}
+
+function renderTutorial() {
+  setProgress(null);
+  main.innerHTML = `
+    <p class="eyebrow">Tutorial</p>
+    <h1 class="title">So funktioniert die Bewertung</h1>
+    <p class="subtitle">Bei jeder Frage bewertest du von 0 (sehr schlecht) bis 10 (hervorragend). Schieb den Regler bei dieser Musterfrage einfach mal hin und her – die Bedeutung deiner Bewertung wird direkt darunter angezeigt.</p>
+
+    <div class="question-card">
+      <div class="question-head">
+        <span class="question-label">Musterfrage</span>
+      </div>
+      <p class="question-text">Wie zufrieden warst du mit diesem Beispiel-Punkt?</p>
+      <div class="slider-row">
+        <input type="range" min="0" max="10" step="1" value="0" id="tutorialSlider">
+        <span class="value-box" id="tutorialValue">0</span>
+      </div>
+      <div class="meaning-box" id="meaningBox">${meaningForValue(0)}</div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-primary" id="tutorialBackBtn">Verstanden, zurück zur Auswahl</button>
+    </div>
+  `;
+
+  const slider = document.getElementById("tutorialSlider");
+  const valueBox = document.getElementById("tutorialValue");
+  const meaningBox = document.getElementById("meaningBox");
+
+  slider.addEventListener("input", () => {
+    const v = Number(slider.value);
+    valueBox.textContent = v;
+    meaningBox.textContent = meaningForValue(v);
+  });
+
+  document
+    .getElementById("tutorialBackBtn")
+    .addEventListener("click", renderTypeSelect);
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function renderCategory(index) {
@@ -301,6 +359,22 @@ function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+function collectItemNotes() {
+  const notes = [];
+  getCategories().forEach((category) => {
+    category.items.forEach((item) => {
+      if (!item.reviewNote) return;
+      const raw = state.answers[item.id];
+      if (raw === "-" || raw === undefined) return;
+      const value = Number(raw);
+      if (value < item.reviewNote.threshold) {
+        notes.push(item.reviewNote.clause);
+      }
+    });
+  });
+  return notes;
+}
+
 function buildReviewText(categoryResults, overallAvg, overallStars) {
   const rated = categoryResults.filter((c) => c.avg !== null);
   if (!rated.length) return "";
@@ -308,7 +382,6 @@ function buildReviewText(categoryResults, overallAvg, overallStars) {
   const low = rated.reduce((a, b) => (b.avg < a.avg ? b : a));
 
   const hasPositive = top.avg >= 8;
-
   const halfOverall = overallAvg !== null ? overallAvg / 2 : 0;
   const hasCritical = low.avg < halfOverall;
 
@@ -323,6 +396,10 @@ function buildReviewText(categoryResults, overallAvg, overallStars) {
     text +=
       " " + pickRandom(REVIEW_NEGATIVE_CLAUSES).replaceAll("{low}", low.name);
   }
+
+  collectItemNotes().forEach((clause) => {
+    text += " " + clause;
+  });
 
   return text;
 }
@@ -344,6 +421,17 @@ function renderResult() {
         <div class="type">${CONFIG[state.businessType].name}</div>
         <div class="overall-stars">${starGlyphs(overallStars)}</div>
         <div class="overall-score">${overallAvg !== null ? overallAvg.toFixed(1) : "–"} / 10 Punkte</div>
+        ${
+          overallAvg !== null
+            ? `
+          <div class="score-scale">
+            <div class="score-scale-track"></div>
+            <div class="score-scale-marker" id="scoreMarker" data-target="${Math.min(100, Math.max(0, (overallAvg / 10) * 100)).toFixed(1)}" style="left:0%"></div>
+          </div>
+          <div class="score-scale-labels"><span>0</span><span>10</span></div>
+        `
+            : ""
+        }
       </div>
       ${
         triggeredCaps.length
@@ -381,6 +469,15 @@ function renderResult() {
       <button class="btn btn-primary" id="copyBtn">Text kopieren</button>
     </div>
   `;
+
+  const scoreMarker = document.getElementById("scoreMarker");
+  if (scoreMarker) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        scoreMarker.style.left = scoreMarker.dataset.target + "%";
+      });
+    });
+  }
 
   const infoBtn = document.getElementById("infoBtn");
   if (infoBtn) {

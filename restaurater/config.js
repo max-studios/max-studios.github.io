@@ -15,8 +15,8 @@ const CONFIG = {
           },
           {
             id: "anrichtung",
-            label: "Anrichtung",
-            question: "Wie ansprechend war die Anrichtung der Speisen?",
+            label: "Präsentation der Gerichte",
+            question: "Wie ansprechend war die Präsentation der Gerichte?",
             weight: 1,
           },
           {
@@ -28,8 +28,7 @@ const CONFIG = {
           {
             id: "kontrastreichtum",
             label: "Kontrastreichtum",
-            question:
-              "War das Essen kontrastreich (farblich abwechslungsreich) angerichtet?",
+            question: "Hat das Essen kontrastreich geschmeckt?",
             weight: 1,
           },
           {
@@ -49,6 +48,17 @@ const CONFIG = {
             label: "Sauberkeit Besteck/Tisch",
             question: "Wie sauber waren Besteck und Tisch?",
             weight: 2,
+          },
+          {
+            id: "preisleistung",
+            label: "Preisleistung",
+            question: "Wie empfandest du das Preis-Leistungs-Verhältnis?",
+            weight: 1,
+            reviewNote: {
+              threshold: 5,
+              clause:
+                "Das Preis-Leistungs-Verhältnis fand ich leider nicht angemessen.",
+            },
           },
         ],
         sperrklauseln: [],
@@ -121,6 +131,12 @@ const CONFIG = {
             question: "Wie war der Zustand der Toilette?",
             weight: 1,
           },
+          {
+            id: "lautstaerke",
+            label: "Lautstärke",
+            question: "Wie empfandest du die Lautstärke im Lokal?",
+            weight: 1,
+          },
         ],
         sperrklauseln: [
           {
@@ -132,8 +148,7 @@ const CONFIG = {
           },
           {
             id: "handtuecher",
-            question:
-              "Waren Stoffhandtücher statt eines Lufttrockners vorhanden?",
+            question: "Waren Handtücher statt eines Lufttrockners vorhanden?",
             scope: "item",
             target: "toilette",
             maxIfNo: 6,

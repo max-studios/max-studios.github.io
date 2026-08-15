@@ -63,7 +63,6 @@ body {
   padding: 0 24px 70px;
 }
 
-/* Header */
 .topbar {
   padding: 32px 0 22px;
   position: sticky;
@@ -175,11 +174,47 @@ h1.title {
   animation: fadeSlideUp 0.5s ease both;
 }
 
-/* Betriebstyp-Auswahl */
 .type-grid {
   display: grid;
   gap: 14px;
   animation-delay: 0.15s;
+}
+
+.tutorial-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: transparent;
+  border: none;
+  color: rgba(243, 236, 216, 0.7);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin: -14px 0 26px;
+  transition: color 0.18s ease;
+  animation: fadeSlideUp 0.5s ease 0.12s both;
+}
+
+.tutorial-link:hover {
+  color: var(--gold-bright);
+}
+
+.icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  color: var(--gold-bright);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 0.8rem;
+  flex-shrink: 0;
 }
 
 .type-card {
@@ -228,7 +263,6 @@ h1.title {
   margin-top: 3px;
 }
 
-/* Fragen-Karten */
 .question-card {
   background: var(--ink-soft);
   border: 1px solid var(--line);
@@ -392,6 +426,18 @@ input[type="range"]:disabled {
 .skip-toggle input[type="checkbox"]:focus-visible {
   outline: 2px solid var(--gold-bright);
   outline-offset: 2px;
+}
+
+.meaning-box {
+  margin-top: 18px;
+  padding: 14px 18px;
+  background: rgba(199, 154, 61, 0.1);
+  border: 1px solid rgba(199, 154, 61, 0.3);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--paper);
+  transition: opacity 0.15s ease;
 }
 
 .gate-card {
@@ -680,6 +726,51 @@ input[type="range"]:disabled {
 .receipt-head .overall-score {
   font-size: 0.92rem;
   opacity: 0.7;
+}
+
+.score-scale {
+  position: relative;
+  max-width: 260px;
+  margin: 16px auto 0;
+  height: 14px;
+}
+
+.score-scale-track {
+  height: 8px;
+  margin-top: 3px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    #c0392b 0%,
+    #dd7a29 25%,
+    #e0c22f 50%,
+    #8fc157 75%,
+    #2f7d3f 100%
+  );
+}
+
+.score-scale-marker {
+  position: absolute;
+  top: -3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2.5px solid var(--paper);
+  box-shadow:
+    0 0 0 1px rgba(28, 23, 18, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  transform: translateX(-50%);
+  transition: left 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.score-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  max-width: 260px;
+  margin: 4px auto 0;
+  font-size: 0.68rem;
+  opacity: 0.45;
 }
 
 .receipt-divider {
