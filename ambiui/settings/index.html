@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AmbiUI | Settings</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <div class="confirm" style="display: none">
+      <div class="confirm_box">
+        <p>
+          Are you sure you want to delete all data? This action cannot be
+          undone.
+        </p>
+        <button id="btn_cancel_delete">No, keep my data</button>
+        <button id="btn_confirm_delete">Yes, delete all data</button>
+      </div>
+    </div>
+
+    <div class="headline">
+      <p id="pheadline">Settings</p>
+    </div>
+
+    <div class="settings">
+      <button class="btn" id="btn_back">Save and go back</button>
+      <label for="inpclock"></label>
+      <label
+        >Left Color: <input type="color" id="colorLeft" value="#4338ca"
+      /></label>
+      <label
+        >Right Color: <input type="color" id="colorRight" value="#2563eb"
+      /></label>
+      <label for="ort">Choose search engine: </label>
+      <select name="engine" id="engine">
+        <option value="-choose search engine-">-choose search engine-</option>
+        <option value="google">Google</option>
+        <option value="ecosia" selected>Ecosia</option>
+        <option value="startpage">Startpage</option>
+        <option value="duckduckgo">DuckDuckGo</option>
+        <option value="url">URL</option>
+      </select>
+      <label for="ort">Select your name: </label>
+      <input type="text" id="name" placeholder="Enter your name here" />
+      <button class="btn" id="btn_github">GitHub</button>
+      <button class="btn_delete_all" id="btn_delete_all">
+        Delete all data
+      </button>
+    </div>
+    <div class="footer">
+      <p id="pfooter">&copy; 2026 max-studios. All rights reserved.</p>
+    </div>
+  </body>
+  <script src="../script/settings.js"></script>
+</html>
