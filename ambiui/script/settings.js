@@ -74,7 +74,7 @@ btnBack.addEventListener("click", () => {
   if (name !== "") {
     localStorage.setItem("name", name);
   }
-  window.open("../index.html", "_self");
+  window.open("../", "_self");
 });
 
 btnGitHub.addEventListener("click", () => {
