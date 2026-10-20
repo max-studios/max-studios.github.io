@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap');
+
+.inter-tight-a > {
+  font-family: 'Inter Tight', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 4px;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Inter Tight;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+body {
+  background-color: rgb(38, 38, 38);
+}
+
+.set-timer {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-border {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  color: beige;
+}
+
+.counting-timer {
+  color: beige;
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: beige;
+}
+
+.alarm-sfx,
+.oled-mode {
+  padding: 2vb;
+  background-color: rgb(53, 54, 53);
+  border-radius: 7px;
+  display: flex;
+  gap: 40px;
+}
+
+select {
+  width: 40%;
+  padding: 6px;
+  border: none;
+  border-radius: 7px;
+  background-color: #f1f1f1;
+  text-align: center;
+}
+
+.display-timer {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.counting-timer {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.counting-timer p {
+  font-size: 15vh;
+}
+
+.inputs {
+  display: flex;
+}
+
+.inputs input {
+  width: 70px;
+  height: 50px;
+  font-size: 50px;
+  display: flex;
+  border: none;
+  border-bottom: 1px solid blue;
+  text-align: center;
+}
+
+.btn {
+  transition-duration: 0.4s;
+  background-color: rgb(0, 124, 201);
+  border: none;
+  color: beige;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.btn:hover {
+  background-color: rgb(12, 192, 138);
+  color: white;
+}

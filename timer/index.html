@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section class="page-set-timer">
+      <div class="settings">
+        <button id="btn-settings">⚙️</button>
+      </div>
+      <div class="set-timer">
+        <div class="inputs">
+          <input type="number" id="input-time-hour" placeholder="h" />
+          <input type="number" id="input-time-minute" placeholder="m" />
+          <input type="number" id="input-time-second" placeholder="s" />
+        </div>
+        <button class="btn" id="btn-run">Run</button>
+      </div>
+    </section>
+    <section class="page-running-timer" style="display: none">
+      <div class="display-timer">
+        <div class="counting-timer">
+          <p id="display-hours">00</p>
+          <p id="display-minutes">00</p>
+          <p id="display-seconds">00</p>
+        </div>
+        <button class="btn" id="btn-stop">Stop</button>
+      </div>
+    </section>
+    <section class="page-settings" style="display: none">
+      <div class="settings-border">
+        <h1>Settings</h1>
+        <div class="settings-content">
+          <div class="alarm-sfx">
+            <label for="inp-alarm">Alarm SFX</label>
+            <select id="inp-alarm">
+              <option value="default">Default</option>
+            </select>
+          </div>
+          <div class="oled-mode">
+            <label for="inp-oled">OLED Mode</label>
+            <select id="inp-oled">
+              <option value="true">on</option>
+              <option value="false">off</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn" id="btn-save">Save and exit</button>
+      </div>
+    </section>
+    <script src="script.js"></script>
+  </body>
+</html>
